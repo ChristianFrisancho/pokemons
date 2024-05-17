@@ -29,7 +29,7 @@ def get_pokemon(id: int):
         host=host_name, port=port_number, user=user_name, password=password_db, database=database_name
     )
     cursor = mydb.cursor()
-    cursor.execute(f"SELECT * FROM pokemons WHERE pokemon_id = {id}")
+    cursor.execute(f"SELECT * FROM pokemons WHERE id = {id}")
     result = cursor.fetchone()
     mydb.close()
     return {"pokemon": result}
@@ -42,14 +42,11 @@ def add_pokemon(item: schemas.Item):
     )
     nombre = item.name
     tipo = item.type
-    hp = item.hp
-    nivel = item.level
-    ataque = item.attack
-    defensa = item.defense
-    velocidad = item.speed
+    sprite = item.sprite
+    catchrate = item.catchrate
     cursor = mydb.cursor()
-    sql = "INSERT INTO pokemons (pokemon_nombre, tipo, hp, nivel, ataque, defensa, velocidad) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    val = (nombre, tipo, hp, nivel, ataque, defensa, velocidad)
+    sql = "INSERT INTO pokemons (nombre, tipo, sprite, catchrate) VALUES (%s, %s, %s, %s)"
+    val = (nombre, tipo, sprite, catchrate)
     cursor.execute(sql, val)
     mydb.commit()
     mydb.close()
@@ -63,14 +60,11 @@ def update_pokemon(id: int, item: schemas.Item):
     )
     nombre = item.name
     tipo = item.type
-    hp = item.hp
-    nivel = item.level
-    ataque = item.attack
-    defensa = item.defense
-    velocidad = item.speed
+    sprite = item.sprite
+    catchrate = item.catchrate
     cursor = mydb.cursor()
-    sql = "UPDATE pokemons SET pokemon_nombre=%s, tipo=%s, hp=%s, nivel=%s, ataque=%s, defensa=%s, velocidad=%s WHERE pokemon_id=%s"
-    val = (nombre, tipo, hp, nivel, ataque, defensa, velocidad, id)
+    sql = "UPDATE pokemons SET nombre=%s, tipo=%s, sprite=%s, catchrate=%s WHERE id=%s"
+    val = (nombre, tipo, sprite, catchrate, id)
     cursor.execute(sql, val)
     mydb.commit()
     mydb.close()
@@ -83,7 +77,7 @@ def delete_pokemon(id: int):
         host=host_name, port=port_number, user=user_name, password=password_db, database=database_name
     )
     cursor = mydb.cursor()
-    cursor.execute(f"DELETE FROM pokemons WHERE pokemon_id = {id}")
+    cursor.execute(f"DELETE FROM pokemons WHERE id = {id}")
     mydb.commit()
     mydb.close()
     return {"message": "Pokemon deleted successfully"}
