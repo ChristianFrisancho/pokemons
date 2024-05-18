@@ -11,7 +11,7 @@ password_db = "CC-utec_2024-s3"
 database_name = "pokemons"  
 
 @app.get("/")
-def_get_hola_mundo():
+def get_hola_mundo():
     return {"message": "Hola Mundo"}
 
 # Get all pokemons
