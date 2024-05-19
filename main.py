@@ -4,7 +4,20 @@ import schemas
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+class Pokemon:
+    def __init__(self, id, nombre, tipo, sprite, catchrate):
+        self.id = id
+        self.nombre = nombre
+        self.tipo = tipo
+        self.sprite = sprite
+        self.catchrate = catchrate
 
+# Function to build Pokemon objects
+def build_pokemon_object(data):
+    if data:
+        id, nombre, tipo, sprite, catchrate = data
+        return Pokemon(id=id, nombre=nombre, tipo=tipo, sprite=sprite, catchrate=catchrate)
+    return None
 
 ALLOWED_ORIGINS = '*'    # or 'foo.com', etc.
 
@@ -27,9 +40,11 @@ def get_pokemons():
     )
     cursor = mydb.cursor()
     cursor.execute("SELECT * FROM pokemons")
-    result = cursor.fetchall()
+    results = cursor.fetchall()
     mydb.close()
-    return {"pokemons": result}
+    
+    pokemons = [build_pokemon_object(data) for data in results]
+    return {"pokemons": pokemons}
 
 # Get a pokemon by ID
 @app.get("/pokemons/{id}")
@@ -41,7 +56,9 @@ def get_pokemon(id: int):
     cursor.execute(f"SELECT * FROM pokemons WHERE id = {id}")
     result = cursor.fetchone()
     mydb.close()
-    return {"pokemon": result}
+    
+    pokemon = build_pokemon_object(result)
+    return {"pokemon": pokemon}
 
 # Add a new pokemon
 @app.post("/pokemons")
