@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 import mysql.connector
 import schemas
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
