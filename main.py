@@ -1,8 +1,22 @@
 from fastapi import FastAPI
 import mysql.connector
 import schemas
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 host_name = "database-1.cpxnwinne8ao.us-east-1.rds.amazonaws.com"
 port_number = "3306"
